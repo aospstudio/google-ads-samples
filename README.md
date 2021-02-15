@@ -1,2 +1,2 @@
 # google-ads-samples
- Admob smart banner and interstitial Android project
+ Admob adaptive banner and interstitial Android project
