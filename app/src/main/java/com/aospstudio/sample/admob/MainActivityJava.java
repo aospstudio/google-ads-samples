@@ -20,10 +20,12 @@ import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
 
+@SuppressWarnings("deprecation")
 public class MainActivityJava extends AppCompatActivity {
 
     private ConsentInformation consentInformation;
     private ConsentForm consentForm;
+    private FrameLayout adviewLayout;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
 
@@ -31,7 +33,8 @@ public class MainActivityJava extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initUAMPForm();
+        adviewLayout = findViewById(R.id.adviewLayout);
+        adviewLayout.post(this::initUAMPForm);
     }
 
     private void initUAMPForm() {
@@ -68,20 +71,23 @@ public class MainActivityJava extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
-        float widthPixels = outMetrics.widthPixels;
         float density = outMetrics.density;
-        int adWidth = (int) (widthPixels / density);
-        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+        float adWidthPixels = adviewLayout.getWidth();
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
     }
 
     private void loadBanner() {
         mAdView = new AdView(this);
         mAdView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");
-        AdRequest adRequest = new AdRequest.Builder().build();
-        FrameLayout adviewLayout = findViewById(R.id.adviewLayout);
+        adviewLayout.removeAllViews();
         adviewLayout.addView(mAdView);
         AdSize adSize = getAdSize();
         mAdView.setAdSize(adSize);
+        AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
 
@@ -99,5 +105,29 @@ public class MainActivityJava extends AppCompatActivity {
                 mInterstitialAd = null;
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 }
