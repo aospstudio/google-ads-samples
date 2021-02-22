@@ -3,19 +3,18 @@
 package com.aospstudio.sample.admob
 
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.ump.ConsentInformation
-import com.google.android.ump.ConsentForm
+import android.content.Context
 import android.widget.FrameLayout
 import android.os.Bundle
-import com.google.android.ump.ConsentRequestParameters
-import com.google.android.ump.UserMessagingPlatform
 import android.util.DisplayMetrics
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.ump.*
 
 class MainActivityKotlin : AppCompatActivity() {
 
+    private val context: Context = this
     private var consentInformation: ConsentInformation? = null
     private var consentForm: ConsentForm? = null
     private var adviewLayout: FrameLayout? = null
@@ -25,8 +24,12 @@ class MainActivityKotlin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MobileAds.initialize(context)
+        MobileAds.setAppMuted(true)
+        initUAMPForm()
         adviewLayout = findViewById(R.id.adviewLayout)
-        adviewLayout!!.post { initUAMPForm() }
+        adviewLayout!!.post { loadBanner() }
+        loadInterstitial()
     }
 
     private fun initUAMPForm() {
@@ -40,18 +43,13 @@ class MainActivityKotlin : AppCompatActivity() {
                 }
             },
             { })
-        MobileAds.initialize(this) {
-            loadBanner()
-            loadInterstitial()
-        }
-        MobileAds.setAppMuted(true)
     }
 
     private fun initConsentForm() {
         UserMessagingPlatform.loadConsentForm(this, { consentForm: ConsentForm ->
             this.consentForm = consentForm
             if (consentInformation!!.consentStatus == ConsentInformation.ConsentStatus.REQUIRED) {
-                consentForm.show(this) { initConsentForm() }
+                consentForm.show(this) { }
             }
         }
         ) { }
@@ -62,13 +60,10 @@ class MainActivityKotlin : AppCompatActivity() {
             val display = windowManager.defaultDisplay
             val outMetrics = DisplayMetrics()
             display.getMetrics(outMetrics)
+            val widthPixels = outMetrics.widthPixels.toFloat()
             val density = outMetrics.density
-            var adWidthPixels = adviewLayout!!.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth)
+            val adWidth = (widthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
         }
 
     private fun loadBanner() {

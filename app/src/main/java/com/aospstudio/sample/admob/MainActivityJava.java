@@ -1,5 +1,6 @@
 package com.aospstudio.sample.admob;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -23,6 +24,7 @@ import com.google.android.ump.UserMessagingPlatform;
 @SuppressWarnings("deprecation")
 public class MainActivityJava extends AppCompatActivity {
 
+    private Context context = this;
     private ConsentInformation consentInformation;
     private ConsentForm consentForm;
     private FrameLayout adviewLayout;
@@ -33,8 +35,13 @@ public class MainActivityJava extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(context);
+        MobileAds.setAppMuted(true);
+        initUAMPForm();
+
         adviewLayout = findViewById(R.id.adviewLayout);
-        adviewLayout.post(this::initUAMPForm);
+        adviewLayout.post(this::loadBanner);
+        loadInterstitial();
     }
 
     private void initUAMPForm() {
@@ -47,19 +54,14 @@ public class MainActivityJava extends AppCompatActivity {
                 },
                 formError -> {
                 });
-
-        MobileAds.initialize(this, initializationStatus -> {
-            loadBanner();
-            loadInterstitial();
-        });
-        MobileAds.setAppMuted(true);
     }
 
     public void initConsentForm() {
         UserMessagingPlatform.loadConsentForm(this, consentForm -> {
                     this.consentForm = consentForm;
                     if (consentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
-                        consentForm.show(this, formError -> initConsentForm());
+                        consentForm.show(this, formError -> {
+                        });
                     }
                 },
                 formError -> {
@@ -71,13 +73,10 @@ public class MainActivityJava extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
+        float widthPixels = outMetrics.widthPixels;
         float density = outMetrics.density;
-        float adWidthPixels = adviewLayout.getWidth();
-        if (adWidthPixels == 0) {
-            adWidthPixels = outMetrics.widthPixels;
-        }
-        int adWidth = (int) (adWidthPixels / density);
-        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
+        int adWidth = (int) (widthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 
     private void loadBanner() {
