@@ -24,7 +24,7 @@ import com.google.android.ump.UserMessagingPlatform;
 @SuppressWarnings("deprecation")
 public class MainActivityJava extends AppCompatActivity {
 
-    private Context context = this;
+    private final Context context = this;
     private ConsentInformation consentInformation;
     private ConsentForm consentForm;
     private FrameLayout adviewLayout;
