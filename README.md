@@ -13,7 +13,7 @@ Kotlin or Java
 ```
 
 ## Screenshoots
-![](https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss1.png | width=600) ![](https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss2.png | width=600)
+<img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss1.png" width="45%"></img> <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss2.png" width="45%"></img> 
 
 ## License
 [Apache 2.0](https://github.com/aospstudio/google-ads-samples/blob/main/LICENSE)
