@@ -1,5 +1,5 @@
 # Admob Sample
-Admob adaptive banner and interstitial Android project
+Admob adaptive banner ad, rewarded interstitial ad and interstitial ad Android project
 
 
 ## Requirements
@@ -12,7 +12,7 @@ AndroidX libraries,
 Kotlin
 ```
 
-## Screenshoots
+## Screenshots
 <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss1.png" width="45%"></img> <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss2.png" width="45%"></img> <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss3.png" width="45%"></img> <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss4.png" width="45%"></img> <img src="https://raw.githubusercontent.com/aospstudio/google-ads-samples/main/screenshots/ss5.png" width="45%"></img>
 
 ## License
