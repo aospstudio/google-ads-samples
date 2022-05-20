@@ -1,5 +1,5 @@
 # Admob Sample
-Admob adaptive banner ad, rewarded interstitial ad and interstitial ad Android project
+Admob adaptive banner, rewarded interstitial and interstitial ad Android project
 
 
 ## Requirements
