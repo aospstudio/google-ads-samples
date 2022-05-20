@@ -3,6 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/interstitial_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Interstitial Ad" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/interstitial_rewards_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/interstitial_open"
+        android:text="Open Rewarded Interstitial Ad" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/interstitial_rewards_open"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:text="Earned: 0" />
+
     <FrameLayout
         android:id="@+id/adviewLayout"
         android:layout_width="match_parent"
